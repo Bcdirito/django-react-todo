@@ -26,6 +26,6 @@ body {
 }
 
 .tab-list > span.active {
-  background-attachment: #282c34;
+  background-color: #282c34;
   color: #ffffff
 }
