@@ -10,15 +10,12 @@ const apiCalls = {
     },
     postPatchRequest: (item, cb) => {
         if (item.id) {
-            debugger
-            axios.put(`${API_URL}${item.id}`)
+            axios.put(`${API_URL}${item.id}/`, item)
             .then(res => {
-                debugger
                 cb(res.data)
             })
             .catch(err => console.log(err))
         } else {
-            debugger
             axios.post(API_URL, item)
             .then(res => cb(res.data))
             .catch(err => console.log(err))
@@ -26,7 +23,9 @@ const apiCalls = {
     },
     deleteRequest: (item, cb) => {
         axios.delete(`${API_URL}${item.id}`)
-        .then(res => cb(item.id))
+        .then(res => {
+            cb(item.id)
+        })
         .catch(err => console.log(err))
     }
 }

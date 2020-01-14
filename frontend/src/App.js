@@ -24,7 +24,6 @@ export default class App extends Component {
       ...this.state,
       modal: false,
       activeItem: {
-        id: 0,
         title: "",
         description: "",
         completed: false
@@ -46,6 +45,24 @@ export default class App extends Component {
     })
   }
 
+  reviseList = (revItem) => {
+    this.setState({
+      ...this.state,
+      todoList: this.state.todoList.map(item => {
+        return item.id === revItem.id ? revItem : item
+      })
+    })
+  }
+
+  filterList = (id) => {
+    this.setState({
+      ...this.state,
+      todoList: this.state.todoList.filter(item => {
+        return item.id !== id
+      })
+    })
+  }
+
   createItem = () => {
     this.setState({
       ...this.state,
@@ -54,13 +71,10 @@ export default class App extends Component {
   }
 
   editItem = (item) => {
-    debugger
     this.setState({
       ...this.state,
       modal: true,
-      activeItem: {
-
-      }
+      activeItem: item
     })
   }
 
@@ -83,7 +97,7 @@ export default class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    postPatchRequest(this.state.activeItem, this.addToList)
+    this.state.activeItem.id ? postPatchRequest(this.state.activeItem, this.reviseList) : postPatchRequest(this.state.activeItem, this.addToList)
     this.resetState()
   }
 
@@ -112,7 +126,7 @@ export default class App extends Component {
           <span className={`todo-title mr-2 ${this.state.viewCompleted ? "completed-todo" : ""}`} title={item.description}>{item.title}</span>
           <span>
             <button onClick={() => this.editItem(item)} className="btn btn-secondary mr-2">{" "}Edit{" "}</button>
-            <button onClick={() => this.handleDelete(item)} className="btn btn-danger">Delete{" "}</button>
+            <button onClick={() => deleteRequest(item, this.filterList)} className="btn btn-danger">Delete{" "}</button>
           </span>
         </li>
       )

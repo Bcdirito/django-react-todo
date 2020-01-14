@@ -12,11 +12,9 @@ import {
 } from "reactstrap";
 
 const CustomModal = (props) => {
-    const {toggle, save} = props
-
     return (
-        <Modal isOpen={true} toggle={toggle}>
-            <ModalHeader toggle={toggle}>To Do</ModalHeader>
+        <Modal isOpen={true} toggle={props.toggle}>
+            <ModalHeader toggle={props.toggle}>To Do</ModalHeader>
             <ModalBody>
                 <Form>
                     <FormGroup>
