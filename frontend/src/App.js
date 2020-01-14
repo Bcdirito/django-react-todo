@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import axios from "axios"
 import CustomModal from "./components/Modal"
+
+const {getRequest, postPatchRequest, deleteRequest} = require("./utils/apiCalls").default
 
 export default class App extends Component {
   state = {
@@ -15,14 +16,14 @@ export default class App extends Component {
   }
 
   componentDidMount = () => {
-    axios.get(process.env.REACT_APP_API_BASE)
-    .then(res => {
-      this.setState({
-        ...this.state,
-        todoList: res.data
-      }, () => console.log(this.state))
+    getRequest(this.loadList)
+  }
+
+  loadList = (list) => {
+    this.setState({
+      ...this.state,
+      todoList: list
     })
-    .catch(err => console.log(err))
   }
 
   createItem = () => {
@@ -32,10 +33,24 @@ export default class App extends Component {
     })
   }
 
+  saveItem = (item) => {
+
+  }
+
   toggle = () => {
     this.setState({
       ...this.state,
       modal: !this.state.modal
+    })
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      ...this.state,
+      activeItem: {
+        ...this.state.activeItem,
+        [e.target.name]: e.target.value
+      }
     })
   }
 
@@ -88,7 +103,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        {this.state.modal ? <CustomModal activeItem={this.state.activeItem}/> : null}
+        {this.state.modal ? <CustomModal activeItem={this.state.activeItem} changeHandler={this.handleChange}/> : null}
       </main>
     )
   }
