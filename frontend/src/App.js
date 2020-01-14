@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import axios from "axios"
+import CustomModal from "./components/Modal"
 
 export default class App extends Component {
   state = {
     viewCompleted: false,
     modal: false,
-    todoList: []
-  }
-
-  toggle = () => {
-    this.setState({
-      ...this.state,
-      modal: !this.state.modal
-    })
+    todoList: [],
+    activeItem: {
+      title: "",
+      description: "",
+      completed: false
+    }
   }
 
   componentDidMount = () => {
@@ -24,6 +23,20 @@ export default class App extends Component {
       }, () => console.log(this.state))
     })
     .catch(err => console.log(err))
+  }
+
+  createItem = () => {
+    this.setState({
+      ...this.state,
+      modal: true
+    })
+  }
+
+  toggle = () => {
+    this.setState({
+      ...this.state,
+      modal: !this.state.modal
+    })
   }
 
   displayCompleted = (status) => {
@@ -66,7 +79,7 @@ export default class App extends Component {
           <div className="col-md-6 col-sm-10 mx-auto p-0">
             <div className="card p-3">
               <div className="">
-                <button className="btn btn-primary">Add Task</button>
+                <button className="btn btn-primary" onClick={() => this.createItem()}>Add Task</button>
               </div>
               {this.renderTabList()}
               <ul className="list-group list-group-flush">
@@ -75,6 +88,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
+        {this.state.modal ? <CustomModal activeItem={this.state.activeItem}/> : null}
       </main>
     )
   }
