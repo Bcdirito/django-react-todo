@@ -33,7 +33,7 @@ const CustomModal = (props) => {
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="success" /*onClick={() => onSave()} */>Save</Button>
+                <Button color="success" onClick={(e) => props.submitHandler(e)}>Save</Button>
             </ModalFooter>
         </Modal>
     )

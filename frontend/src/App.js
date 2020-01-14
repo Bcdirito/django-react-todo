@@ -19,10 +19,30 @@ export default class App extends Component {
     getRequest(this.loadList)
   }
 
+  resetState = () => {
+    this.setState({
+      ...this.state,
+      modal: false,
+      activeItem: {
+        id: 0,
+        title: "",
+        description: "",
+        completed: false
+      }
+    })
+  }
+
   loadList = (list) => {
     this.setState({
       ...this.state,
       todoList: list
+    })
+  }
+
+  addToList = (item) => {
+    this.setState({
+      ...this.state,
+      todoList: [...this.state.todoList, item]
     })
   }
 
@@ -33,8 +53,15 @@ export default class App extends Component {
     })
   }
 
-  saveItem = (item) => {
+  editItem = (item) => {
+    debugger
+    this.setState({
+      ...this.state,
+      modal: true,
+      activeItem: {
 
+      }
+    })
   }
 
   toggle = () => {
@@ -52,6 +79,12 @@ export default class App extends Component {
         [e.target.name]: e.target.value
       }
     })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    postPatchRequest(this.state.activeItem, this.addToList)
+    this.resetState()
   }
 
   displayCompleted = (status) => {
@@ -78,7 +111,7 @@ export default class App extends Component {
         <li key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
           <span className={`todo-title mr-2 ${this.state.viewCompleted ? "completed-todo" : ""}`} title={item.description}>{item.title}</span>
           <span>
-            <button onClick={() => this.editItem()} className="btn btn-secondary mr-2">{" "}Edit{" "}</button>
+            <button onClick={() => this.editItem(item)} className="btn btn-secondary mr-2">{" "}Edit{" "}</button>
             <button onClick={() => this.handleDelete(item)} className="btn btn-danger">Delete{" "}</button>
           </span>
         </li>
@@ -103,7 +136,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        {this.state.modal ? <CustomModal activeItem={this.state.activeItem} changeHandler={this.handleChange}/> : null}
+        {this.state.modal ? <CustomModal activeItem={this.state.activeItem} changeHandler={this.handleChange} submitHandler={this.handleSubmit}/> : null}
       </main>
     )
   }
